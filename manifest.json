@@ -1,23 +1,28 @@
 {
-  "name": "JUBR",
+  "name": "JUBR Swimlane",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": [
     "tabs",
-    "scripting"
+    "scripting",
+    "storage"
   ],
   "host_permissions": [
     "https://jifeline.atlassian.net/*"
   ],
-  "background": {
-    "service_worker": "background.js"
-  },
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "icon.png",
       "48": "icon.png",
       "128": "icon.png"
     }
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://jifeline.atlassian.net/*"],
+      "js": ["jquery.js", "content-script.js", "jira-request.js", "notification-system.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }

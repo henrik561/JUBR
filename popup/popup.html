@@ -1,71 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Jira Plugin Settings</title>
-  <!-- We include jquery.js (which you already have in your folder) -->
-  <script src="jquery.js"></script>
-  <style>
-      body {
-          font-family: Arial, sans-serif;
-          width: 300px;
-          padding: 10px;
-      }
-      label {
-          display: block;
-          margin-top: 10px;
-      }
-      input {
-          width: 100%;
-          padding: 5px;
-          margin-top: 5px;
-      }
-      button {
-          margin-top: 15px;
-          padding: 8px 12px;
-      }
-      #status {
-          margin-top: 10px;
-          color: green;
-      }
-  </style>
+  <link rel="stylesheet" href="./popup-styles.css">
 </head>
 <body>
-<h1>Jira Credentials</h1>
-<form id="credentialsForm">
-  <label for="email">Email:</label>
-  <input type="email" id="email" name="email" required>
+<div class="container">
+  <h1>Jira Settings</h1>
+  <form id="credentialsForm">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+    </div>
 
-  <label for="apiToken">API Token:</label>
-  <input type="text" id="apiToken" name="apiToken" required>
+    <div class="form-group">
+      <label for="apiToken">API Token</label>
+      <input
+        type="password"
+        id="apiToken"
+        name="apiToken"
+        required
+        autocomplete="current-password">
+      <button type="button" id="toggleToken" class="toggle-btn">
+        Show
+      </button>
+    </div>
 
-  <button type="submit">Save</button>
-</form>
-<div id="status"></div>
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">Save</button>
+      <button type="button" id="testConnection" class="btn-secondary">
+        Test Connection
+      </button>
+    </div>
+  </form>
 
-<script>
-    $(document).ready(function() {
-        // Load any previously saved credentials and populate the form.
-        chrome.storage.sync.get(['jiraEmail', 'jiraApiToken'], function(result) {
-            if (result.jiraEmail) {
-                $('#email').val(result.jiraEmail);
-            }
-            if (result.jiraApiToken) {
-                $('#apiToken').val(result.jiraApiToken);
-            }
-        });
-
-        // When the form is submitted, save the credentials.
-        $('#credentialsForm').submit(function(e) {
-            e.preventDefault();
-            var email = $('#email').val();
-            var token = $('#apiToken').val();
-
-            chrome.storage.sync.set({ jiraEmail: email, jiraApiToken: token }, function() {
-                $('#status').text('Credentials saved successfully.');
-            });
-        });
-    });
-</script>
+  <div id="status" class="status" role="alert"></div>
+</div>
+<script src="jquery.js"></script>
+<script src="./popup-script.js"></script>
 </body>
 </html>
